@@ -182,4 +182,4 @@ chrome.extension.sendRequest({"cmd": "options"}, function(response) {
 //        toggleState();
 //        sendResponse({"enabled": enabled});
 //    }
-//}); 
+//});   
