@@ -1,0 +1,106 @@
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script type="text/javascript" src="js/libs/jquery-1.9.0/jquery.min.js"></script>
+        <style>
+            #textview {
+                width: 640px;
+                height: 480px;
+                word-wrap: break-word;
+                font-family: "Tahoma";
+                font-size: 16px;
+                border: solid 1px #330022;
+                padding: 6px;
+            }
+        </style>
+    </head>
+    <body>
+        <!--<div id="textview" contenteditable="true"></div>-->
+        <textarea id="textview"></textarea>
+        <script>
+            var lastState = null;
+            var lastCaretPos = 0;
+            var modified = false;
+            var lastModificationNullified = false;
+
+            $(document).ready(function() {
+                var id = "textview";
+                listen(id);
+            });
+            function listen(id) {
+                var el = $('#' + id);
+                el.keypress(function(e) {
+                    if (e.which === 32 && !lastModificationNullified)
+                        el.val(parseText(el.val(), el.prop("selectionStart")));
+                    else
+                        lastModificationNullified = false;
+                });
+                el.keyup(function(e) {
+                    if (e.keyCode === 8 || e.keyCode === 46) {
+                        if (modified) {
+                            modified = false;
+                            el.val(lastState);
+                            lastModificationNullified = true;
+                        }
+                    }
+                });
+            }
+
+            var tokenMap = {
+                "4": "for", "thr": "there", "d": "the", "cud": "could", "u": "you", "r": "are",
+                "thn": "then", "i": "I", "ws": "was", "wsnt": "wasn't", "v": "we", "fucking": "f*****g",
+                "fukin": "f***n", "gona": "gonna", "fr": "for", "2": "to", "dat": "that", "nd": "and",
+                "fuck": "f**k", "shd": "should", "shud": "should", "shld": "should", "nce": "once", "cnt": "can't",
+                "gud": "good", "nyt": "night", "nite": "night", "gn": "good night", "tc": "take care",
+                "gm": "good morning", "shit": "$%&t", "hm": "hmm", "nt": "not", "ty": "thankyou", "by": "bye",
+                "jst": "just", "c": "see", "cnct": "contact", "y": "why", "k": "okay", "kk": "okay",
+                "dis": "this", "rthr": "rather", "sy": "say", "??": "what happened?", "brb": "be right back",
+                "bt": "but", "abt": "about", "hve": "have", "ve": "have", "b": "be", "wat": "what", "f9":"fine",
+                "im":"I'm", "gt":"get", "yt":"yet", "nvr":"never", "b4":"before", "dy":"day", "cn":"can",
+                "f":"of", "fb":"Facebook", "m": "I'm",
+            };
+            function parseText(text, caretPos) {
+                lastState = text;
+                lastCaretPos = caretPos;
+                var tok = getTransformationUnit(text, caretPos);
+                if (tok !== "undefined") {
+//                    console.log(tok);
+                    var t, i;
+                    t = tok[0];
+                    i = tok[1];
+                    if (t in tokenMap) {
+                        t = tokenMap[t];
+                        text = text.substring(0, i + 1) + t + text.substring(caretPos);
+                        modified = true;
+                    } else
+                        modified = false;
+                }
+                return text;
+            }
+            function getTransformationUnit(text, pos) {
+                if (typeof text === "string") {
+                    if (text.length >= pos && pos >= 0) {
+                        var token = "";
+                        var i = pos;
+                        while (i >= 0) {
+                            if (/[^a-zA-Z0-9]/.test(text.charAt(i)))
+                                break;
+                            else
+                                token = text.charAt(i) + token;
+                            i--;
+                        }
+                        return [token, i];
+                    }
+                }
+                console.log("fn:getTransformationUnit:Illegal argument");
+            }
+
+        </script>
+    </body>
+</html>

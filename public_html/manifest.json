@@ -1,0 +1,18 @@
+{
+    "manifest_version": 2,
+    "name": "AutoCorrect",
+    "description": "This extension demonstrates a browser action with autocorrect.",
+    "version": "1.0",
+    "content_scripts": [{
+            "js": ["jquery.js", "main.js"],
+            "matches": ["http://*/*", "https://*/*"],
+            "all_frames": true
+        }],
+    "permissions": [
+        "tabs"
+    ],
+    "browser_action": {
+        "default_icon": "edit.png",
+        "default_popup": "index.html"
+    }
+}
