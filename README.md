@@ -9,3 +9,13 @@ Happy typing ;)
 
 Usage
 -----
+# Download or clone the directory.
+# Directory named `public_html` is your directory that contains files required for extension to work. Extract this directory
+  and store it somewhere.
+# Open a new chrome *tab*
+# type `chrome://extensions/`
+# Click on `Load unpacked extension...`
+# Browse the directory `public_html(explained above)` and select it
+# Congrats! your extension is ready to be used. A page refresh **is** required before it gets functional on any page.
+
+
