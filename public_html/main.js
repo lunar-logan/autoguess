@@ -37,16 +37,68 @@ var tokenMap = {
     "dis": "this", "rthr": "rather", "sy": "say", "??": "what happened?", "brb": "be right back",
     "bt": "but", "abt": "about", "hve": "have", "ve": "have", "b": "be", "wat": "what", "f9": "fine",
     "im": "I'm", "gt": "get", "yt": "yet", "nvr": "never", "b4": "before", "dy": "day", "cn": "can",
-    "f": "of", "fb": "Facebook", "m": "am", "hw": "how", "wtf":"what the fuck", "gr8": "great",
-    "2day":"today", "2nite":"tonight","afaik":"as far as I know", "2l8":"too late",
-    "3sum":"threesome","awsme":"awsome", "1nce":"once", "mob":"mobile","btw":"by the way",
-    "gf":"girlfreind", "ph":"phone", "no.":"number", "phn":"phone no.", "coz":"because",
-    "bcoz":"because","g2g":"get to gather", "l8r":"later", "l8":"late", "latr":"later",
-    "luv":"love", "lve":"love", "ilu":"I love you","nyc":"nice", "njoy":"enjoy","ol":"online",
-    "google":"search", "ru":"are you","ta":"thanks again", "sum1":"someone", "som1":"someone",
-    "sm1":"someone", "thanq":"thankyou", "wt":"what", "ur":"you are","t+":"think positive",
-    "n":"and", "gtg":"gotta go", "agn":"again", "bitch":"b!^(#"
+    "f": "of", "fb": "Facebook", "m": "am", "hw": "how", "wtf": "what the fuck", "gr8": "great",
+    "2day": "today", "2nite": "tonight", "afaik": "as far as I know", "2l8": "too late",
+    "3sum": "threesome", "awsme": "awsome", "1nce": "once", "mob": "mobile", "btw": "by the way",
+    "gf": "girlfreind", "ph": "phone", "no.": "number", "phn": "phone no.", "coz": "because",
+    "bcoz": "because", "g2g": "get to gather", "l8r": "later", "l8": "late", "latr": "later",
+    "luv": "love", "lve": "love", "ilu": "I love you", "nyc": "nice", "njoy": "enjoy", "ol": "online",
+    "google": "search", "ru": "are you", "ta": "thanks again", "sum1": "someone", "som1": "someone",
+    "sm1": "someone", "thanq": "thankyou", "wt": "what", "ur": "you are", "t+": "think positive",
+    "n": "and", "gtg": "gotta go", "agn": "again", "bitch": "b!^(#"
 };
+// Compute the edit distance between the two given strings
+getEditDistance = function(a, b) {
+    if (a.length === 0)
+        return b.length;
+    if (b.length === 0)
+        return a.length;
+
+    var matrix = [];
+
+    // increment along the first column of each row
+    var i;
+    for (i = 0; i <= b.length; i++) {
+        matrix[i] = [i];
+    }
+
+    // increment each column in the first row
+    var j;
+    for (j = 0; j <= a.length; j++) {
+        matrix[0][j] = j;
+    }
+
+    // Fill in the rest of the matrix
+    for (i = 1; i <= b.length; i++) {
+        for (j = 1; j <= a.length; j++) {
+            if (b.charAt(i - 1) === a.charAt(j - 1)) {
+                matrix[i][j] = matrix[i - 1][j - 1];
+            } else {
+                matrix[i][j] = Math.min(matrix[i - 1][j - 1] + 1, // substitution
+                        Math.min(matrix[i][j - 1] + 1, // insertion
+                        matrix[i - 1][j] + 1)); // deletion
+            }
+        }
+    }
+
+    return matrix[b.length][a.length];
+}
+var wordList = [];
+
+getClosestMatch = function(tok, threshold) {
+    var i;
+    var match, score;
+    for (i = 0; i < wordList.length; i++) {
+        var word = wordList[i];
+        var dist = getEditDistance(tok, word);
+        if (dist < score) {
+            score = dist;
+            match = tok;
+        }
+    }
+    if (score <= threshold)
+        return match;
+}
 function parseText(text, caretPos) {
     lastState = text;
     lastCaretPos = caretPos;
@@ -56,14 +108,24 @@ function parseText(text, caretPos) {
         var t, j;
         t = tok[0];
         j = tok[1];
+        modified = false;
+
         if (t in tokenMap) {
             t = tokenMap[t];
-            text = text.substring(0, j + 1) + t + text.substring(caretPos);
+//            text = text.substring(0, j + 1) + t + text.substring(caretPos);
             console.log("fn:parseText:text modified");
             modified = true;
-            caretPos += t.length - 1;
+//            caretPos += t.length - 1;
         } else {
-            modified = false;
+            var mat = getClosestMatch(t, 2);
+            if (mat !== undefined) {
+                t = mat;
+                modified = true;
+            }
+        }
+        if (modified) {
+            text = text.substring(0, j + 1) + t + text.substring(caretPos);
+            caretPos += t.length - 1;
         }
         saveContext();
     }
@@ -155,7 +217,7 @@ function keyupHandler(e) {
         if (modified) {
 //            modified = false;
             el[func](lastState + " ");
-            el.setCursorPosition(lastCaretPos+1);
+            el.setCursorPosition(lastCaretPos + 1);
 //            lastState = el[func]();
             setContext(el[func](), false, lastModificationNullified, lastCaretPos);
             saveContext();
