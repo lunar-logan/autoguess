@@ -1,7 +1,6 @@
 /**
  * @author Anurag Gautam
- * @version 0.9a
- * @see http://developer.chrome.com/extensions/index.html
+ * @version 0.9b
  */
 var lastState = null;
 var lastCaretPos = 0;
@@ -151,7 +150,7 @@ function keyupHandler(e) {
     var func = "val";
     if (restoreContext() === undefined)
         initContext();
-    if (e.keyCode === 8 || e.keyCode === 46) {
+    if (e.keyCode === 8) {
 //        console.log("Backspace stroke!");
         if (modified) {
 //            modified = false;
@@ -170,18 +169,6 @@ chrome.extension.sendRequest({"cmd": "options"}, function(response) {
 //    if (options.default_state === "enabled") {
     $("textarea").on("keypress", keypressHandler);
     $("textarea").on("keyup", keyupHandler);
-//        enabled = true;
-//    } else {
-//        enabled = false;
-//    }
-//
-//    if (options.icon === "focus") {
-//        $("textarea").live("focus", function(event) {
-//            chrome.extension.sendRequest({"cmd": "show_icon", "enabled": enabled});
-//        });
-//    } else if (options.icon === "show") {
-//        chrome.extension.sendRequest({"cmd": "show_icon", "enabled": enabled});
-//    }
 
 });
 
