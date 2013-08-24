@@ -9,6 +9,7 @@ Happy typing ;)
 
 Usage
 -----
+
 # Download or clone the directory.
 # Directory named `public_html` is your directory that contains files required for extension to work. Extract this directory
   and store it somewhere.
