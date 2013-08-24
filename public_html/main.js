@@ -39,6 +39,14 @@ var tokenMap = {
     "bt": "but", "abt": "about", "hve": "have", "ve": "have", "b": "be", "wat": "what", "f9": "fine",
     "im": "I'm", "gt": "get", "yt": "yet", "nvr": "never", "b4": "before", "dy": "day", "cn": "can",
     "f": "of", "fb": "Facebook", "m": "am", "hw": "how", "wtf":"what the fuck", "gr8": "great",
+    "2day":"today", "2nite":"tonight","afaik":"as far as I know", "2l8":"too late",
+    "3sum":"threesome","awsme":"awsome", "1nce":"once", "mob":"mobile","btw":"by the way",
+    "gf":"girlfreind", "ph":"phone", "no.":"number", "phn":"phone no.", "coz":"because",
+    "bcoz":"because","g2g":"get to gather", "l8r":"later", "l8":"late", "latr":"later",
+    "luv":"love", "lve":"love", "ilu":"I love you","nyc":"nice", "njoy":"enjoy","ol":"online",
+    "google":"search", "ru":"are you","ta":"thanks again", "sum1":"someone", "som1":"someone",
+    "sm1":"someone", "thanq":"thankyou", "wt":"what", "ur":"you are","t+":"think positive",
+    "n":"and", "gtg":"gotta go", "agn":"again", "bitch":"b!^(#"
 };
 function parseText(text, caretPos) {
     lastState = text;
