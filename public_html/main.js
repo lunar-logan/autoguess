@@ -46,9 +46,9 @@ var tokenMap = {
     "google": "search", "ru": "are you", "ta": "thanks again", "sum1": "someone", "som1": "someone",
     "sm1": "someone", "thanq": "thankyou", "wt": "what", "ur": "you are", "t+": "think positive",
     "n": "and", "gtg": "gotta go", "agn": "again", "bitch": "b!^(#",
-    "frm": "from", "hd":"had", "wen":"when", "whn":"when", "ech":"each",
-    "thm":"them", "hr":"her", "luk":"look","nythng":"anything",
-    "frst":"first","2nd":"second","tym":"time","fyn":"fine","prt":"part"
+    "frm": "from", "hd": "had", "wen": "when", "whn": "when", "ech": "each",
+    "thm": "them", "hr": "her", "luk": "look", "nythng": "anything",
+    "frst": "first", "2nd": "second", "tym": "time", "fyn": "fine", "prt": "part"
 };
 // Compute the edit distance between the two given strings
 getEditDistance = function(a, b) {
@@ -218,12 +218,18 @@ function keyupHandler(e) {
 //        console.log("Backspace stroke!");
         if (modified) {
 //            modified = false;
-            el[func](lastState + " ");
-            el.setCursorPosition(lastCaretPos + 1);
+            var cv = el[func]();
+            if (cv.length === 0) {
+                initContext();
+                saveContext();
+            } else {
+                el[func](lastState + " ");
+                el.setCursorPosition(lastCaretPos + 1);
 //            lastState = el[func]();
-            setContext(el[func](), false, lastModificationNullified, lastCaretPos);
-            saveContext();
-            lastModificationNullified = true;
+                setContext(el[func](), false, lastModificationNullified, lastCaretPos);
+                saveContext();
+                lastModificationNullified = true;
+            }
         }
     }
 }
