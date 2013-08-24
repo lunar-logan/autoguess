@@ -14,7 +14,7 @@ Usage
 2. Directory named `public_html` is your directory that contains files required for extension to work. Extract this directory
    and store it somewhere.
 3. Open a new chrome *tab*
-4. type `chrome://extensions/` 
+4. Type `chrome://extensions/` in address bar and load it.
 5. Click on `Load unpacked extension...`
 6. Browse the directory `public_html(explained above)` and select it
 7. Congrats! your extension is ready to be used. A page refresh **is** required before it gets functional on any page.
