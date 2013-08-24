@@ -45,7 +45,10 @@ var tokenMap = {
     "luv": "love", "lve": "love", "ilu": "I love you", "nyc": "nice", "njoy": "enjoy", "ol": "online",
     "google": "search", "ru": "are you", "ta": "thanks again", "sum1": "someone", "som1": "someone",
     "sm1": "someone", "thanq": "thankyou", "wt": "what", "ur": "you are", "t+": "think positive",
-    "n": "and", "gtg": "gotta go", "agn": "again", "bitch": "b!^(#"
+    "n": "and", "gtg": "gotta go", "agn": "again", "bitch": "b!^(#",
+    "frm": "from", "hd":"had", "wen":"when", "whn":"when", "ech":"each",
+    "thm":"them", "hr":"her", "luk":"look","nythng":"anything",
+    "frst":"first","2nd":"second","tym":"time","fyn":"fine","prt":"part"
 };
 // Compute the edit distance between the two given strings
 getEditDistance = function(a, b) {
@@ -120,17 +123,10 @@ function parseText(text, caretPos) {
 //            text = text.substring(0, j + 1) + t + text.substring(caretPos);
                 console.log("fn:parseText:text modified");
                 modified = true;
-//            caretPos += t.length - 1;
-            } else {
-                var mat = getClosestMatch(t, 2);
-                if (mat !== undefined) {
-                    t = mat;
-                    modified = true;
-                }
             }
         }
         if (modified) {
-            text = text.substring(0, j + 1) + t + text.substring(caretPos+1);
+            text = text.substring(0, j + 1) + t + text.substring(caretPos);
             caretPos += t.length - 1;
         }
         saveContext();
