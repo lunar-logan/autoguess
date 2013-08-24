@@ -82,23 +82,27 @@ getEditDistance = function(a, b) {
     }
 
     return matrix[b.length][a.length];
-}
-var wordList = [];
+};
+//var wordList = [];
 
 getClosestMatch = function(tok, threshold) {
     var i;
-    var match, score;
+    var match = tok, score = tok.length;
+//    console.log("Wordlist=>",wordList.length);
     for (i = 0; i < wordList.length; i++) {
         var word = wordList[i];
         var dist = getEditDistance(tok, word);
         if (dist < score) {
+            console.log(word);
             score = dist;
-            match = tok;
+            match = word;
         }
     }
+    console.log("fn:getClosestMatch:", match, "=>", score, "for", tok);
     if (score <= threshold)
         return match;
-}
+//    return tok;
+};
 function parseText(text, caretPos) {
     lastState = text;
     lastCaretPos = caretPos;
@@ -110,21 +114,23 @@ function parseText(text, caretPos) {
         j = tok[1];
         modified = false;
 
-        if (t in tokenMap) {
-            t = tokenMap[t];
+        if (/[a-zA-Z0-9]+/.test(t)) {
+            if (t in tokenMap) {
+                t = tokenMap[t];
 //            text = text.substring(0, j + 1) + t + text.substring(caretPos);
-            console.log("fn:parseText:text modified");
-            modified = true;
-//            caretPos += t.length - 1;
-        } else {
-            var mat = getClosestMatch(t, 2);
-            if (mat !== undefined) {
-                t = mat;
+                console.log("fn:parseText:text modified");
                 modified = true;
+//            caretPos += t.length - 1;
+            } else {
+                var mat = getClosestMatch(t, 2);
+                if (mat !== undefined) {
+                    t = mat;
+                    modified = true;
+                }
             }
         }
         if (modified) {
-            text = text.substring(0, j + 1) + t + text.substring(caretPos);
+            text = text.substring(0, j + 1) + t + text.substring(caretPos+1);
             caretPos += t.length - 1;
         }
         saveContext();
