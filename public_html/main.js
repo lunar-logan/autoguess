@@ -38,7 +38,7 @@ var tokenMap = {
     "dis": "this", "rthr": "rather", "sy": "say", "??": "what happened?", "brb": "be right back",
     "bt": "but", "abt": "about", "hve": "have", "ve": "have", "b": "be", "wat": "what", "f9": "fine",
     "im": "I'm", "gt": "get", "yt": "yet", "nvr": "never", "b4": "before", "dy": "day", "cn": "can",
-    "f": "of", "fb": "Facebook", "m": "am", "hw": "how"
+    "f": "of", "fb": "Facebook", "m": "am", "hw": "how", "wtf":"what the fuck", "gr8": "great",
 };
 function parseText(text, caretPos) {
     lastState = text;
